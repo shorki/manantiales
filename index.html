@@ -1068,4 +1068,18 @@ function renderNvList() {
   }).join('');
 }
 function deleteNovedad(id) {
-  if(confirm('¿Eliminar esta novedad?')){ novedades=novedades.filter(function(n){ return n.id!==id; }); saveData(); renderNvList(); showToast('Novedad eliminad
+  if(confirm('¿Eliminar esta novedad?')){ novedades=novedades.filter(function(n){ return n.id!==id; }); saveData(); renderNvList(); showToast('Novedad eliminada'); }
+}
+
+// ===== TOAST =====
+function showToast(msg) {
+  var t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(function(){ t.classList.remove('show'); }, 3000);
+}
+
+// ===== INIT =====
+startSlider();
+</script>
+</body>
+</html>
