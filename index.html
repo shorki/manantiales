@@ -660,12 +660,12 @@ footer ul li a:hover{color:var(--gold-light);}
   <div class="admin-login" id="login-box">
     <h2>Panel Admin</h2>
     <p>Acceso exclusivo para el equipo de Manantiales</p>
-    <input type="text" id="login-user" placeholder="Usuario" autocomplete="username">
+    <input type="email" id="login-user" placeholder="Email" autocomplete="email">
     <input type="password" id="login-pass" placeholder="Contraseña" autocomplete="current-password">
     <div class="login-error" id="login-error">Usuario o contraseña incorrectos</div>
-    <button class="btn-primary" style="width:100%;justify-content:center;" onclick="doLogin()">Ingresar</button>
+    <button id="login-btn" class="btn-primary" style="width:100%;justify-content:center;" onclick="doLogin()">Ingresar</button>
     <button class="btn-secondary" style="width:100%;justify-content:center;margin-top:8px;" onclick="closeAdmin()">Cancelar</button>
-    <p style="font-size:11px;color:var(--text-light);margin-top:16px;text-align:center;">Demo: usuario <strong>admin</strong> · contraseña <strong>campo2025</strong></p>
+    <p style="font-size:11px;color:var(--text-light);margin-top:16px;text-align:center;">Ingresá con tu email y contraseña de Supabase</p>
   </div>
 </div>
 
