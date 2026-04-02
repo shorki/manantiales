@@ -22,15 +22,15 @@ body{font-family:'Barlow',sans-serif;background:#fff;color:var(--text-dark);over
 /* NAV */
 nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(26,77,46,0.97);backdrop-filter:blur(8px);border-bottom:2px solid var(--gold);display:flex;align-items:center;padding:0 2rem;height:116px;}
 .nav-logo{display:flex;align-items:center;text-decoration:none;}
-.nav-logo img{height:86px;width:auto;background:white;padding:6px 16px;border-radius:5px;object-fit:contain;}
-.nav-tagline{margin-left:20px;border-left:2px solid var(--gold);padding-left:18px;display:flex;flex-direction:column;justify-content:center;}
-.nav-tagline span:first-child{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;color:var(--gold-light);letter-spacing:2px;text-transform:uppercase;line-height:1.3;}
-.nav-tagline span:last-child{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;color:rgba(255,255,255,0.65);letter-spacing:3px;text-transform:uppercase;line-height:1;}
+.nav-logo img{height:86px;width:auto;background:white;padding:6px 16px;border-radius:5px;object-fit:contain;transform:scaleX(1.1);transform-origin:left center;}
+.nav-tagline{margin-left:32px;border-left:2px solid var(--gold);padding-left:18px;display:flex;flex-direction:column;justify-content:center;}
+.nav-tagline span:first-child{font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:800;color:var(--gold-light);letter-spacing:2px;text-transform:uppercase;line-height:1.3;}
+.nav-tagline span:last-child{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;color:rgba(255,255,255,0.65);letter-spacing:3px;text-transform:uppercase;line-height:1;}
 .nav-links{display:flex;align-items:center;gap:2px;margin-left:auto;}
-.nav-links a{color:rgba(255,255,255,0.82);text-decoration:none;font-size:13px;font-weight:500;letter-spacing:0.5px;text-transform:uppercase;padding:8px 14px;border-radius:3px;transition:all 0.2s;}
+.nav-links a{color:rgba(255,255,255,0.82);text-decoration:none;font-size:15px;font-weight:500;letter-spacing:0.5px;text-transform:uppercase;padding:8px 14px;border-radius:3px;transition:all 0.2s;}
 .nav-links a:hover{background:rgba(255,255,255,0.1);color:#fff;}
 .nav-links a.active{color:var(--gold-light);}
-.nav-btn-admin{margin-left:12px;padding:8px 14px;background:var(--gold) !important;color:var(--white) !important;border-radius:3px;font-size:12px !important;font-weight:600 !important;letter-spacing:1px !important;}
+.nav-btn-admin{margin-left:12px;padding:8px 14px;background:var(--gold) !important;color:var(--white) !important;border-radius:3px;font-size:14px !important;font-weight:600 !important;letter-spacing:1px !important;}
 .nav-btn-admin:hover{background:var(--gold-light) !important;}
 
 /* SECTIONS - only active shows */
@@ -255,7 +255,7 @@ footer p{font-size:13px;line-height:1.7;}
 footer ul{list-style:none;display:flex;flex-direction:column;gap:8px;}footer ul li a{display:flex;align-items:center;gap:6px;}
 footer ul li a{color:rgba(255,255,255,0.55);text-decoration:none;font-size:13px;transition:color 0.15s;}
 footer ul li a:hover{color:var(--gold-light);}
-.footer-bottom{max-width:1200px;margin:40px auto 0;padding-top:20px;border-top:1px solid rgba(255,255,255,0.1);display:flex;justify-content:space-between;align-items:center;font-size:12px;}
+
 
 /* RESPONSIVE */
 @media(max-width:900px){
@@ -474,11 +474,11 @@ footer ul li a:hover{color:var(--gold-light);}
   <div style="max-width:900px;margin:0 auto;padding:0 2rem 80px;" class="team-cards-container">
     <div class="team-card">
       <div class="team-photo" id="photo-socio-director"><div class="team-photo-placeholder">👤</div></div>
-      <div class="team-info"><div class="team-role">Socio Director</div><div class="team-name">Germán Peyrot</div><div class="team-phone">📞 +598 99 626 153</div></div>
+      <div class="team-info"><div class="team-role">Socio Director</div><div class="team-name">Germán</div><div class="team-phone">📞 +598 99 626 153</div></div>
     </div>
     <div class="team-card">
       <div class="team-photo" id="photo-team-1"><div class="team-photo-placeholder">👤</div></div>
-      <div class="team-info"><div class="team-name">Juan Peyrot</div><div class="team-phone">📞 +598 99 735 071</div></div>
+      <div class="team-info"><div class="team-name">Juan</div><div class="team-phone">📞 +598 99 735 071</div></div>
     </div>
     <div class="team-card">
       <div class="team-photo" id="photo-socio"><div class="team-photo-placeholder">👤</div></div>
@@ -592,11 +592,7 @@ footer ul li a:hover{color:var(--gold-light);}
       </ul>
     </div>
   </div>
-  <div class="footer-bottom">
-    <span>© 2025 Manantiales Maquinaria Agrícola · Uruguay</span>
-    <span>Equipos agrícolas importados usados · Origen definido</span>
-  </div>
-</footer>
+</footer></footer>
 
 <!-- ======================================================
      ADMIN LOGIN
@@ -1478,11 +1474,11 @@ loadNovedades();
 <!-- WhatsApp flotante -->
 <div style="position:fixed;bottom:28px;right:28px;z-index:9999;display:flex;flex-direction:column;gap:12px;align-items:flex-end;">
   <a href="https://wa.me/59899735071" target="_blank" style="display:flex;align-items:center;gap:10px;text-decoration:none;">
-    <span style="background:rgba(0,0,0,0.6);color:#fff;font-size:13px;font-weight:600;padding:6px 12px;border-radius:20px;white-space:nowrap;font-family:'Barlow',sans-serif;">Juan Peyrot</span>
+    <span style="background:rgba(0,0,0,0.6);color:#fff;font-size:13px;font-weight:600;padding:6px 12px;border-radius:20px;white-space:nowrap;font-family:'Barlow',sans-serif;">Juan</span>
     <div style="width:48px;height:48px;background:#25d366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(0,0,0,0.25);transition:transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.116 1.523 5.845L.057 23.428a.5.5 0 00.609.61l5.71-1.494A11.954 11.954 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.886 0-3.652-.523-5.157-1.432l-.36-.216-3.736.978.997-3.645-.235-.374A9.96 9.96 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg></div>
   </a>
   <a href="https://wa.me/59899626153" target="_blank" style="display:flex;align-items:center;gap:10px;text-decoration:none;">
-    <span style="background:rgba(0,0,0,0.6);color:#fff;font-size:13px;font-weight:600;padding:6px 12px;border-radius:20px;white-space:nowrap;font-family:'Barlow',sans-serif;">Germán Peyrot</span>
+    <span style="background:rgba(0,0,0,0.6);color:#fff;font-size:13px;font-weight:600;padding:6px 12px;border-radius:20px;white-space:nowrap;font-family:'Barlow',sans-serif;">Germán</span>
     <div style="width:48px;height:48px;background:#25d366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(0,0,0,0.25);transition:transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.116 1.523 5.845L.057 23.428a.5.5 0 00.609.61l5.71-1.494A11.954 11.954 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.886 0-3.652-.523-5.157-1.432l-.36-.216-3.736.978.997-3.645-.235-.374A9.96 9.96 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg></div>
   </a>
 </div>
@@ -1491,13 +1487,7 @@ loadNovedades();
 
 </body>
 </html
-  <div class="nav-links">
-    <a href="#" class="active" onclick="showSection('inicio');return false;">Inicio</a>
-    <a href="#" onclick="showSection('equipos');return false;">Equipos Agrícolas</a>
-    <a href="#" onclick="showSection('quienes-somos');return false;">Quiénes Somos</a>
-    <a href="#" onclick="showSection('contacto');return false;">Contacto</a>
-    <a href="#" class="nav-btn-admin" onclick="openAdmin();return false;">⚙ Admin</a>
-  </div>
+  
 </nav>
 
 <!-- ======================================================
@@ -1646,11 +1636,11 @@ loadNovedades();
   <div style="max-width:900px;margin:0 auto;padding:0 2rem 80px;" class="team-cards-container">
     <div class="team-card">
       <div class="team-photo" id="photo-socio-director"><div class="team-photo-placeholder">👤</div></div>
-      <div class="team-info"><div class="team-role">Socio Director</div><div class="team-name">Germán Peyrot</div><div class="team-phone">📞 +598 99 626 153</div></div>
+      <div class="team-info"><div class="team-role">Socio Director</div><div class="team-name">Germán</div><div class="team-phone">📞 +598 99 626 153</div></div>
     </div>
     <div class="team-card">
       <div class="team-photo" id="photo-team-1"><div class="team-photo-placeholder">👤</div></div>
-      <div class="team-info"><div class="team-name">Juan Peyrot</div><div class="team-phone">📞 +598 99 735 071</div></div>
+      <div class="team-info"><div class="team-name">Juan</div><div class="team-phone">📞 +598 99 735 071</div></div>
     </div>
     <div class="team-card">
       <div class="team-photo" id="photo-socio"><div class="team-photo-placeholder">👤</div></div>
@@ -1736,39 +1726,7 @@ loadNovedades();
 <!-- ======================================================
      FOOTER
 ====================================================== -->
-<footer>
-  <div class="footer-inner">
-    <div>
-      <h4>Equipos</h4>
-      <ul>
-        <li><a href="#" onclick="showSection('equipos');filterCatDirect('Labranza')">Labranza</a></li>
-        <li><a href="#" onclick="showSection('equipos');filterCatDirect('Cosecha')">Cosecha</a></li>
-        <li><a href="#" onclick="showSection('equipos');filterCatDirect('Siembra')">Siembra</a></li>
-        <li><a href="#" onclick="showSection('equipos');filterCatDirect('Pulverización')">Pulverización</a></li>
-      </ul>
-    </div>
-    <div>
-      <h4>Empresa</h4>
-      <ul>
-        <li><a href="#" onclick="showSection('quienes-somos')">Quiénes Somos</a></li>
-        <li><a href="#" onclick="showSection('contacto')">Contacto</a></li>
-      </ul>
-    </div>
-    <div>
-      <h4>Contacto</h4>
-      <ul>
-        <li><a href="tel:+59899626153" style="display:flex;align-items:center;gap:6px;">📞 +598 99 626 153</a></li>
-        <li><a href="tel:+59899735071" style="display:flex;align-items:center;gap:6px;">📞 +598 99 735 071</a></li>
-        <li><a href="#" style="display:flex;align-items:center;gap:6px;white-space:nowrap;">✉️ <span class="__cf_email__" data-cfemail="7f121e111e110b161e131a0c121e0e0a16111e0d161e3f17100b121e1613511c1012">[email&#160;protected]</span></a></li>
-        <li><a href="https://instagram.com/manantialesmaquinaria" target="_blank" style="display:flex;align-items:center;gap:6px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="rgba(255,255,255,0.55)" stroke-width="2"/><circle cx="12" cy="12" r="4" stroke="rgba(255,255,255,0.55)" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1.5" fill="rgba(255,255,255,0.55)"/></svg> @manantialesmaquinaria</a></li>
-      </ul>
-    </div>
-  </div>
-  <div class="footer-bottom">
-    <span>© 2025 Manantiales Maquinaria Agrícola · Uruguay</span>
-    <span>Equipos agrícolas importados usados · Origen definido</span>
-  </div>
-</footer>
+
 
 <!-- ======================================================
      ADMIN LOGIN
@@ -2650,11 +2608,11 @@ loadNovedades();
 <!-- WhatsApp flotante -->
 <div style="position:fixed;bottom:28px;right:28px;z-index:9999;display:flex;flex-direction:column;gap:12px;align-items:flex-end;">
   <a href="https://wa.me/59899735071" target="_blank" style="display:flex;align-items:center;gap:10px;text-decoration:none;">
-    <span style="background:rgba(0,0,0,0.6);color:#fff;font-size:13px;font-weight:600;padding:6px 12px;border-radius:20px;white-space:nowrap;font-family:'Barlow',sans-serif;">Juan Peyrot</span>
+    <span style="background:rgba(0,0,0,0.6);color:#fff;font-size:13px;font-weight:600;padding:6px 12px;border-radius:20px;white-space:nowrap;font-family:'Barlow',sans-serif;">Juan</span>
     <div style="width:48px;height:48px;background:#25d366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(0,0,0,0.25);transition:transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.116 1.523 5.845L.057 23.428a.5.5 0 00.609.61l5.71-1.494A11.954 11.954 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.886 0-3.652-.523-5.157-1.432l-.36-.216-3.736.978.997-3.645-.235-.374A9.96 9.96 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg></div>
   </a>
   <a href="https://wa.me/59899626153" target="_blank" style="display:flex;align-items:center;gap:10px;text-decoration:none;">
-    <span style="background:rgba(0,0,0,0.6);color:#fff;font-size:13px;font-weight:600;padding:6px 12px;border-radius:20px;white-space:nowrap;font-family:'Barlow',sans-serif;">Germán Peyrot</span>
+    <span style="background:rgba(0,0,0,0.6);color:#fff;font-size:13px;font-weight:600;padding:6px 12px;border-radius:20px;white-space:nowrap;font-family:'Barlow',sans-serif;">Germán</span>
     <div style="width:48px;height:48px;background:#25d366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(0,0,0,0.25);transition:transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.116 1.523 5.845L.057 23.428a.5.5 0 00.609.61l5.71-1.494A11.954 11.954 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.886 0-3.652-.523-5.157-1.432l-.36-.216-3.736.978.997-3.645-.235-.374A9.96 9.96 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg></div>
   </a>
 </div>
