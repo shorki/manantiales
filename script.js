@@ -41,13 +41,16 @@ let novedades = [];
 let currentPhotos = []; // File objects pending upload
 let currentPhotoUrls = []; // Already uploaded URLs (existing in DB)
 let removedPhotoUrls = []; // URLs to delete from DB on save
+let currentVideos = [];
+let currentVideoUrls = [];
+let removedVideoUrls = [];
 let editingId = null;
 let currentNvFoto = null;
 
 // ===== LOAD DATA =====
 async function loadMachines() {
   try {
-    const equipos = await sbFetch('equipos?select=*,fotos_equipos(url,orden)&order=created_at.desc');
+    const equipos = await sbFetch('equipos?select=*,fotos_equipos(url,orden),videos_equipos(url,orden)&order=created_at.desc');
     machines = equipos.map(e => ({
       id: e.id,
       nombre: e.nombre,
@@ -59,7 +62,8 @@ async function loadMachines() {
       specs: e.especificaciones || [],
       activo: e.activo,
       estado: e.estado || '',
-      fotos: (e.fotos_equipos || []).sort((a,b) => a.orden - b.orden).map(f => f.url)
+      fotos: (e.fotos_equipos || []).sort((a,b) => a.orden - b.orden).map(f => f.url),
+      videos: (e.videos_equipos || []).sort((a,b) => a.orden - b.orden).map(f => f.url)
     }));
   } catch(e) {
     console.error('Error cargando equipos:', e);
@@ -262,6 +266,48 @@ function removePhoto(i) {
   renderPreviews();
 }
 
+// ===== VIDEO UPLOAD =====
+function handleVideoFiles(files) {
+  Array.from(files).forEach(function(file) {
+    currentVideos.push(file);
+    var url = URL.createObjectURL(file);
+    currentVideoUrls.push({ url: url, existing: false });
+    renderVideoPreviews();
+  });
+}
+function handleVideoDrop(e) { e.preventDefault(); handleVideoFiles(e.dataTransfer.files); }
+function renderVideoPreviews() {
+  document.getElementById('video-previews').innerHTML = currentVideoUrls.map(function(item, i) {
+    var url = typeof item === 'string' ? item : item.url;
+    return '<div class="photo-preview-item"><video src="'+url+'" style="width:100%;height:100%;object-fit:cover;"></video><button class="photo-preview-remove" onclick="removeVideo('+i+')">✕</button></div>';
+  }).join('');
+}
+function removeVideo(i) {
+  var item = currentVideoUrls[i];
+  if (item && (typeof item === 'string' || item.existing)) {
+    removedVideoUrls.push(typeof item === 'string' ? item : item.url);
+  } else {
+    var newIdx = 0;
+    for (var j = 0; j < i; j++) {
+      if (currentVideoUrls[j] && !currentVideoUrls[j].existing) newIdx++;
+    }
+    currentVideos.splice(newIdx, 1);
+  }
+  currentVideoUrls.splice(i, 1);
+  renderVideoPreviews();
+}
+async function uploadVideo(file, equipoId) {
+  var ext = file.name.split('.').pop();
+  var path = 'equipo_' + equipoId + '_' + Date.now() + '.' + ext;
+  var res = await fetch(SUPABASE_URL + '/storage/v1/object/videos/' + path, {
+    method: 'POST',
+    headers: { 'Authorization': 'Bearer ' + SUPABASE_KEY, 'Content-Type': file.type },
+    body: file
+  });
+  if (!res.ok) throw new Error('Error subiendo video');
+  return SUPABASE_URL + '/storage/v1/object/public/videos/' + path;
+}
+
 // ===== SAVE MACHINE =====
 async function saveMachine() {
   var nombre = document.getElementById('f-nombre').value.trim();
@@ -324,6 +370,27 @@ async function saveMachine() {
       }
     }
 
+    // Delete removed videos from DB
+    if (removedVideoUrls.length > 0) {
+      for (var rv = 0; rv < removedVideoUrls.length; rv++) {
+        try {
+          await sbFetch('videos_equipos?url=eq.' + encodeURIComponent(removedVideoUrls[rv]), { method: 'DELETE' });
+        } catch(e2) { console.warn('No se pudo eliminar video:', e2); }
+      }
+    }
+
+    // Upload new videos
+    if (currentVideos.length > 0) {
+      var existingVideoCount = currentVideoUrls.filter(function(x){ return x && x.existing; }).length;
+      for (var vi = 0; vi < currentVideos.length; vi++) {
+        var vurl = await uploadVideo(currentVideos[vi], equipo.id);
+        await sbFetch('videos_equipos', {
+          method: 'POST',
+          body: JSON.stringify({ equipo_id: equipo.id, url: vurl, orden: existingVideoCount + vi })
+        });
+      }
+    }
+
     showToast('✓ Equipo guardado correctamente');
     clearForm();
     await loadMachines();
@@ -341,6 +408,7 @@ function clearForm() {
   document.getElementById('f-categoria').value='';
   document.getElementById('f-estado').value='usado';
   currentPhotos=[]; currentPhotoUrls=[]; removedPhotoUrls=[]; renderPreviews(); editingId=null;
+  currentVideos=[]; currentVideoUrls=[]; removedVideoUrls=[]; renderVideoPreviews();
   document.getElementById('form-title').textContent='➕ Agregar nuevo equipo';
 }
 
@@ -380,6 +448,7 @@ function editMachine(id) {
   document.getElementById('f-specs').value = (m.specs||[]).join(', ');
   document.getElementById('f-estado').value = m.estado||'';
   currentPhotos=[]; currentPhotoUrls=m.fotos?m.fotos.map(function(u){return {url:u,existing:true};}):[];  removedPhotoUrls=[]; renderPreviews();
+  currentVideos=[]; currentVideoUrls=m.videos?m.videos.map(function(u){return {url:u,existing:true};}):[];  removedVideoUrls=[]; renderVideoPreviews();
   document.getElementById('form-title').textContent='✏ Editando: '+m.nombre;
 }
 
@@ -485,7 +554,9 @@ var modalIdx = 0;
 function openFotoModal(id) {
   var m = machines.find(function(x) { return x.id == id; });
   if (!m) return;
-  modalFotos = m.fotos || [];
+  var fotos = (m.fotos || []).map(function(u){ return {url:u, type:'foto'}; });
+  var videos = (m.videos || []).map(function(u){ return {url:u, type:'video'}; });
+  modalFotos = fotos.concat(videos);
   modalIdx = 0;
   document.getElementById('modal-title').textContent = m.nombre + (m.marca ? ' · ' + m.marca : '') + (m.anio ? ' ' + m.anio : '');
   document.getElementById('foto-modal').style.display = 'flex';
@@ -493,14 +564,24 @@ function openFotoModal(id) {
   renderModal();
 }
 function renderModal() {
-  var img = document.getElementById('modal-img');
+  var container = document.getElementById('modal-media-container');
   var counter = document.getElementById('modal-counter');
   var thumbs = document.getElementById('modal-thumbs');
-  if (modalFotos.length === 0) { img.src=''; counter.textContent='Sin fotos'; thumbs.innerHTML=''; return; }
-  img.src = modalFotos[modalIdx];
+  if (modalFotos.length === 0) { container.innerHTML=''; counter.textContent='Sin fotos'; thumbs.innerHTML=''; return; }
+  var item = modalFotos[modalIdx];
+  if (item.type === 'video') {
+    container.innerHTML = '<video src="'+item.url+'" controls autoplay muted style="max-width:94vw;max-height:78vh;border-radius:6px;"></video>';
+  } else {
+    container.innerHTML = '<img src="'+item.url+'" style="max-width:94vw;max-height:78vh;object-fit:contain;border-radius:6px;">';
+  }
   counter.textContent = (modalIdx+1) + ' / ' + modalFotos.length;
-  thumbs.innerHTML = modalFotos.map(function(url,i) {
-    return '<img src="'+url+'" onclick="goModalFoto('+i+')" style="width:64px;height:48px;object-fit:cover;border-radius:4px;cursor:pointer;border:2px solid '+(i===modalIdx?'var(--gold)':'transparent')+';opacity:'+(i===modalIdx?'1':'0.6')+';">';
+  thumbs.innerHTML = modalFotos.map(function(it,i) {
+    var border = 'border:2px solid '+(i===modalIdx?'var(--gold)':'transparent');
+    var opacity = 'opacity:'+(i===modalIdx?'1':'0.6');
+    if (it.type === 'video') {
+      return '<div onclick="goModalFoto('+i+')" style="width:64px;height:48px;border-radius:4px;cursor:pointer;'+border+';'+opacity+';background:#111;display:flex;align-items:center;justify-content:center;font-size:22px;">▶</div>';
+    }
+    return '<img src="'+it.url+'" onclick="goModalFoto('+i+')" style="width:64px;height:48px;object-fit:cover;border-radius:4px;cursor:pointer;'+border+';'+opacity+';">';
   }).join('');
 }
 function goModalFoto(i) { modalIdx=i; renderModal(); }

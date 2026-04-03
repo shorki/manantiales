@@ -311,6 +311,18 @@
                 <div class="photo-preview-grid" id="photo-previews"></div>
               </div>
             </div>
+            <div class="form-field span2">
+              <label>Videos <span style="font-weight:400;color:var(--text-light);">opcional</span></label>
+              <div class="photo-upload-area" id="video-drop-zone" onclick="document.getElementById('video-upload-input').click()" ondragover="event.preventDefault()" ondrop="handleVideoDrop(event)">
+                <input type="file" id="video-upload-input" class="upload-input" multiple accept="video/*" onchange="handleVideoFiles(this.files)">
+                <div id="video-upload-placeholder">
+                  <div class="upload-icon">🎬</div>
+                  <h5>Arrastrá los videos o hacé click aquí</h5>
+                  <p>MP4, MOV · podés subir varios videos del equipo</p>
+                </div>
+                <div class="photo-preview-grid" id="video-previews"></div>
+              </div>
+            </div>
             <div class="form-field">
               <label>Nombre / Modelo *</label>
               <input type="text" id="f-nombre" placeholder="ej: John Deere 6110M">
@@ -490,7 +502,7 @@
   <button onclick="closeFotoModal()" style="position:absolute;top:20px;right:24px;background:none;border:none;color:#fff;font-size:36px;cursor:pointer;">✕</button>
   <div style="position:relative;display:flex;align-items:center;justify-content:center;">
     <button onclick="modalNav(-1)" class="modal-nav-btn" style="position:absolute;left:8px;z-index:10;background:rgba(0,0,0,0.45);border:none;color:#fff;font-size:36px;width:44px;height:44px;border-radius:50%;cursor:pointer;">&#8249;</button>
-    <img id="modal-img" src="" style="max-width:94vw;max-height:78vh;object-fit:contain;border-radius:6px;">
+    <div id="modal-media-container" style="display:flex;align-items:center;justify-content:center;"></div>
     <button onclick="modalNav(1)" class="modal-nav-btn" style="position:absolute;right:8px;z-index:10;background:rgba(0,0,0,0.45);border:none;color:#fff;font-size:36px;width:44px;height:44px;border-radius:50%;cursor:pointer;">&#8250;</button>
   </div>
   <div id="modal-title" style="color:#fff;font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:700;margin-top:16px;"></div>
