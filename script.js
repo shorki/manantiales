@@ -263,10 +263,9 @@ function adminTab(tab, el) {
 
 // ===== PHOTO UPLOAD (pending files) =====
 async function handleFiles(files) {
-  const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
   for (const file of Array.from(files)) {
-    if (!allowedTypes.includes(file.type)) {
-      showToast('⚠ Subí imágenes JPG, PNG o WebP. Ese archivo puede fallar en Chrome.');
+    if (!file.type.startsWith('image/')) {
+      showToast('⚠ Solo se pueden subir imágenes.');
       continue;
     }
     currentPhotos.push(file);
