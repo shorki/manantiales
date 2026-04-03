@@ -488,10 +488,10 @@
 
 <div id="foto-modal" style="display:none;position:fixed;inset:0;z-index:3000;background:rgba(0,0,0,0.92);align-items:center;justify-content:center;flex-direction:column;">
   <button onclick="closeFotoModal()" style="position:absolute;top:20px;right:24px;background:none;border:none;color:#fff;font-size:36px;cursor:pointer;">✕</button>
-  <div style="position:relative;max-width:90vw;max-height:80vh;display:flex;align-items:center;gap:16px;">
-    <button onclick="modalNav(-1)" style="background:rgba(255,255,255,0.15);border:none;color:#fff;font-size:36px;width:50px;height:50px;border-radius:50%;cursor:pointer;flex-shrink:0;">&#8249;</button>
-    <img id="modal-img" src="" style="max-width:80vw;max-height:75vh;object-fit:contain;border-radius:6px;">
-    <button onclick="modalNav(1)" style="background:rgba(255,255,255,0.15);border:none;color:#fff;font-size:36px;width:50px;height:50px;border-radius:50%;cursor:pointer;flex-shrink:0;">&#8250;</button>
+  <div style="position:relative;display:flex;align-items:center;justify-content:center;">
+    <button onclick="modalNav(-1)" class="modal-nav-btn" style="position:absolute;left:8px;z-index:10;background:rgba(0,0,0,0.45);border:none;color:#fff;font-size:36px;width:44px;height:44px;border-radius:50%;cursor:pointer;">&#8249;</button>
+    <img id="modal-img" src="" style="max-width:94vw;max-height:78vh;object-fit:contain;border-radius:6px;">
+    <button onclick="modalNav(1)" class="modal-nav-btn" style="position:absolute;right:8px;z-index:10;background:rgba(0,0,0,0.45);border:none;color:#fff;font-size:36px;width:44px;height:44px;border-radius:50%;cursor:pointer;">&#8250;</button>
   </div>
   <div id="modal-title" style="color:#fff;font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:700;margin-top:16px;"></div>
   <div id
