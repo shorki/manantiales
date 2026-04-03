@@ -571,9 +571,13 @@ function renderModal() {
   arrows.forEach(function(a){ a.style.display = modalFotos.length > 1 ? '' : 'none'; });
   if (modalFotos.length === 0) { container.innerHTML=''; counter.textContent='Sin fotos'; thumbs.innerHTML=''; return; }
   var item = modalFotos[modalIdx];
-  container.innerHTML = item.type === 'video'
-    ? '<video src="'+item.url+'" controls style="max-width:94vw;max-height:78vh;border-radius:6px;display:block;"></video>'
-    : '<img src="'+item.url+'" alt="" style="max-width:94vw;max-height:78vh;object-fit:contain;border-radius:6px;display:block;">';
+  container.innerHTML = '';
+  var el = document.createElement(item.type === 'video' ? 'video' : 'img');
+  el.style.cssText = 'width:auto;height:auto;max-width:94vw;max-height:68vh;object-fit:contain;border-radius:6px;display:block;';
+  if (item.type === 'video') { el.controls = true; }
+  else { el.alt = ''; }
+  container.appendChild(el);
+  el.src = item.url;
   counter.textContent = (modalIdx+1) + ' / ' + modalFotos.length;
   thumbs.innerHTML = modalFotos.map(function(it,i) {
     var border = 'border:2px solid '+(i===modalIdx?'var(--gold)':'transparent');
