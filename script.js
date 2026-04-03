@@ -113,9 +113,9 @@ function machineCardHTML(m) {
   var badge = m.estado === 'nuevo' ? 'badge-nuevo' : 'badge-usado';
   var specs = (m.specs||[]).slice(0,4).map(function(s) { return '<span class="spec-tag">'+s+'</span>'; }).join('');
   return '<div class="machine-card" onclick="openFotoModal(\''+m.id+'\')">'
-    + '<div class="machine-card-img">'+fotoHTML+(m.estado==='vendido'?'<div class="badge-vendido">Vendido</div>':m.estado==='proximamente'?'<div class="badge-proximamente">PrÃ³ximamente</div>':'')+'</div>'
+    + '<div class="machine-card-img">'+fotoHTML+(m.estado==='vendido'?'<div class="badge-vendido">Vendido</div>':m.estado==='proximamente'?'<div class="badge-proximamente">Próximamente</div>':'')+'</div>'
     + '<div class="machine-card-body">'
-    + '<div class="machine-card-model">'+m.categoria+(m.marca?' Â· '+m.marca:'')+'</div>'
+    + '<div class="machine-card-model">'+m.categoria+(m.marca?' · '+m.marca:'')+'</div>'
     + '<div class="machine-card-name">'+m.nombre+'</div>'
     + '<div class="machine-card-desc">'+m.desc+'</div>'
     + '<div class="machine-card-specs">'+specs+'</div>'
@@ -133,7 +133,7 @@ function renderEquipos(cat) {
     return;
   }
   var filtered = cat === 'Todos' ? machines.filter(function(m) { return m.activo; }) : machines.filter(function(m) { return m.activo && m.categoria === cat; });
-  el.innerHTML = filtered.length > 0 ? filtered.map(machineCardHTML).join('') : '<div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--text-light);">No hay equipos en esta categorÃ­a</div>';
+  el.innerHTML = filtered.length > 0 ? filtered.map(machineCardHTML).join('') : '<div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--text-light);">No hay equipos en esta categoría</div>';
 }
 
 function filterCat(el, cat) {
@@ -165,9 +165,9 @@ function renderNovedades() {
   grid.style.display='grid'; empty.style.display='none';
   grid.innerHTML = novedades.map(function(n) {
     return '<div class="novedad-card">'
-      + '<div class="novedad-img">'+(n.foto_url?'<img src="'+n.foto_url+'" alt="">':'ð°')+'</div>'
+      + '<div class="novedad-img">'+(n.foto_url?'<img src="'+n.foto_url+'" alt="">':'📰')+'</div>'
       + '<div class="novedad-body">'
-      + '<div class="novedad-cat">'+(n.fecha||'')+' Â· '+(n.categoria||'Novedad')+'</div>'
+      + '<div class="novedad-cat">'+(n.fecha||'')+' · '+(n.categoria||'Novedad')+'</div>'
       + '<div class="novedad-title">'+n.titulo+'</div>'
       + '<div class="novedad-desc">'+n.resumen+'</div>'
       + '</div></div>';
@@ -177,14 +177,14 @@ function renderNovedades() {
 // ===== CONTACT =====
 function submitQS() {
   var n = document.getElementById('qs-nombre').value.trim();
-  if (!n) { showToast('â  IngresÃ¡ tu nombre'); return; }
-  showToast('â Mensaje enviado. Te contactamos pronto.');
+  if (!n) { showToast('⚠ Ingresá tu nombre'); return; }
+  showToast('✓ Mensaje enviado. Te contactamos pronto.');
   ['qs-nombre','qs-tel','qs-email','qs-msg'].forEach(function(id) { document.getElementById(id).value=''; });
 }
 function submitContacto() {
   var n = document.getElementById('ct-nombre').value.trim();
-  if (!n) { showToast('â  IngresÃ¡ tu nombre'); return; }
-  showToast('â Mensaje enviado. Te contactamos pronto.');
+  if (!n) { showToast('⚠ Ingresá tu nombre'); return; }
+  showToast('✓ Mensaje enviado. Te contactamos pronto.');
   ['ct-nombre','ct-tel','ct-email','ct-mensaje'].forEach(function(id) { document.getElementById(id).value=''; });
 }
 
@@ -233,7 +233,7 @@ function handleDrop(e) { e.preventDefault(); handleFiles(e.dataTransfer.files); 
 function renderPreviews() {
   document.getElementById('photo-previews').innerHTML = currentPhotoUrls.map(function(item, i) {
     var url = typeof item === 'string' ? item : item.url;
-    return '<div class="photo-preview-item"><img src="'+url+'"><button class="photo-preview-remove" onclick="removePhoto('+i+')">â</button></div>';
+    return '<div class="photo-preview-item"><img src="'+url+'"><button class="photo-preview-remove" onclick="removePhoto('+i+')">✕</button></div>';
   }).join('');
 }
 function removePhoto(i) {
@@ -244,7 +244,7 @@ function removePhoto(i) {
     removedPhotoUrls.push(url);
   } else {
     // Es un archivo nuevo pendiente de subir, solo quitarlo del array de archivos
-    // Encontrar el Ã­ndice correspondiente en currentPhotos
+    // Encontrar el índice correspondiente en currentPhotos
     var newIdx = 0;
     for (var j = 0; j < i; j++) {
       if (currentPhotoUrls[j] && !currentPhotoUrls[j].existing) newIdx++;
@@ -259,7 +259,7 @@ function removePhoto(i) {
 async function saveMachine() {
   var nombre = document.getElementById('f-nombre').value.trim();
   var categoria = document.getElementById('f-categoria').value;
-  if (!nombre || !categoria) { showToast('â  CompletÃ¡ nombre y categorÃ­a'); return; }
+  if (!nombre || !categoria) { showToast('⚠ Completá nombre y categoría'); return; }
 
   var specs = document.getElementById('f-specs').value
     ? document.getElementById('f-specs').value.split(',').map(function(s) { return s.trim(); }).filter(Boolean)
@@ -317,13 +317,13 @@ async function saveMachine() {
       }
     }
 
-    showToast('â Equipo guardado correctamente');
+    showToast('✓ Equipo guardado correctamente');
     clearForm();
     await loadMachines();
 
   } catch(e) {
     console.error(e);
-    showToast('â Error guardando: ' + e.message);
+    showToast('✗ Error guardando: ' + e.message);
   } finally {
     btn.textContent = 'Guardar equipo'; btn.disabled = false;
   }
@@ -334,7 +334,7 @@ function clearForm() {
   document.getElementById('f-categoria').value='';
   document.getElementById('f-estado').value='usado';
   currentPhotos=[]; currentPhotoUrls=[]; removedPhotoUrls=[]; renderPreviews(); editingId=null;
-  document.getElementById('form-title').textContent='â Agregar nuevo equipo';
+  document.getElementById('form-title').textContent='➕ Agregar nuevo equipo';
 }
 
 function renderAdminTable() {
@@ -349,12 +349,12 @@ function renderAdminTable() {
       +'<td>'+(m.fotos&&m.fotos.length>0?'<img src="'+m.fotos[0]+'" alt="" style="width:52px;height:38px;object-fit:cover;border-radius:3px;">':'<div style="width:52px;height:38px;background:var(--cream-dark);border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--text-light);">sin foto</div>')+'</td>'
       +'<td><strong>'+m.nombre+'</strong><br><span style="font-size:11px;color:var(--text-light);">'+(m.marca||'')+' '+(m.anio||'')+'</span></td>'
       +'<td>'+m.categoria+'</td>'
-      +'<td>'+(m.precio?'USD '+m.precio:'â')+'</td>'
+      +'<td>'+(m.precio?'USD '+m.precio:'—')+'</td>'
       +'<td><span class="status-pill '+(m.activo?'pill-active':'pill-inactive')+'">'+(m.activo?'Activo':'Oculto')+'</span></td>'
       +'<td>'
-      +'<button class="tbl-btn tbl-edit" onclick="editMachine(\''+m.id+'\')">â Editar</button>'
+      +'<button class="tbl-btn tbl-edit" onclick="editMachine(\''+m.id+'\')">✏ Editar</button>'
       +'<button class="tbl-btn tbl-edit" style="background:'+(m.activo?'#fef3e2':'#e4f5ea')+';color:'+(m.activo?'#8b5e00':'#1d6e3f')+'" onclick="toggleActive(\''+m.id+'\','+(m.activo?'false':'true')+')">'+  (m.activo?'Ocultar':'Mostrar')+'</button>'
-      +'<button class="tbl-btn tbl-del" onclick="deleteMachine(\''+m.id+'\')">ð</button>'
+      +'<button class="tbl-btn tbl-del" onclick="deleteMachine(\''+m.id+'\')">🗑</button>'
       +'</td></tr>';
   }).join('');
 }
@@ -373,22 +373,22 @@ function editMachine(id) {
   document.getElementById('f-specs').value = (m.specs||[]).join(', ');
   document.getElementById('f-estado').value = m.estado||'';
   currentPhotos=[]; currentPhotoUrls=m.fotos?m.fotos.map(function(u){return {url:u,existing:true};}):[];  removedPhotoUrls=[]; renderPreviews();
-  document.getElementById('form-title').textContent='â Editando: '+m.nombre;
+  document.getElementById('form-title').textContent='✏ Editando: '+m.nombre;
 }
 
 async function toggleActive(id, activo) {
   try {
     await sbFetch('equipos?id=eq.'+id, { method:'PATCH', body: JSON.stringify({activo: activo==='true'}) });
-    await loadMachines(); renderAdminTable(); showToast('â Estado actualizado');
-  } catch(e) { showToast('â Error: '+e.message); }
+    await loadMachines(); renderAdminTable(); showToast('✓ Estado actualizado');
+  } catch(e) { showToast('✗ Error: '+e.message); }
 }
 
 async function deleteMachine(id) {
-  if (!confirm('Â¿Eliminar este equipo?')) return;
+  if (!confirm('¿Eliminar este equipo?')) return;
   try {
     await sbFetch('equipos?id=eq.'+id, { method:'DELETE' });
     await loadMachines(); renderAdminTable(); showToast('Equipo eliminado');
-  } catch(e) { showToast('â Error: '+e.message); }
+  } catch(e) { showToast('✗ Error: '+e.message); }
 }
 
 // ===== NOVEDADES =====
@@ -396,13 +396,13 @@ function handleNvFile(files) {
   if (!files[0]) return;
   currentNvFoto = files[0];
   var url = URL.createObjectURL(files[0]);
-  document.getElementById('nv-preview').innerHTML='<div class="photo-preview-item" style="width:120px;height:80px;"><img src="'+url+'"><button class="photo-preview-remove" onclick="currentNvFoto=null;document.getElementById(\'nv-preview\').innerHTML=\'\'" >â</button></div>';
+  document.getElementById('nv-preview').innerHTML='<div class="photo-preview-item" style="width:120px;height:80px;"><img src="'+url+'"><button class="photo-preview-remove" onclick="currentNvFoto=null;document.getElementById(\'nv-preview\').innerHTML=\'\'" >✕</button></div>';
 }
 
 async function saveNovedad() {
   var titulo = document.getElementById('nv-titulo').value.trim();
   var resumen = document.getElementById('nv-resumen').value.trim();
-  if (!titulo||!resumen) { showToast('â  CompletÃ¡ tÃ­tulo y descripciÃ³n'); return; }
+  if (!titulo||!resumen) { showToast('⚠ Completá título y descripción'); return; }
 
   var btn = document.querySelector('#tab-novedades-admin .admin-submit');
   btn.textContent='Publicando...'; btn.disabled=true;
@@ -433,11 +433,11 @@ async function saveNovedad() {
       })
     });
 
-    showToast('â Novedad publicada');
+    showToast('✓ Novedad publicada');
     clearNovedad();
     await loadNovedades(); renderNvList();
   } catch(e) {
-    showToast('â Error: '+e.message);
+    showToast('✗ Error: '+e.message);
   } finally {
     btn.textContent='Publicar'; btn.disabled=false;
   }
@@ -457,19 +457,19 @@ function renderNvList() {
   if(novedades.length===0){ el.innerHTML='<p style="font-size:13px;color:var(--text-light);">No hay novedades.</p>'; return; }
   el.innerHTML=novedades.map(function(n) {
     return '<div style="display:flex;align-items:center;gap:12px;padding:12px;background:var(--cream);border-radius:4px;border:1px solid var(--cream-dark);margin-bottom:8px;">'
-      +(n.foto_url?'<img src="'+n.foto_url+'" style="width:60px;height:42px;object-fit:cover;border-radius:3px;flex-shrink:0;">':'<div style="width:60px;height:42px;background:var(--cream-dark);border-radius:3px;flex-shrink:0;display:flex;align-items:center;justify-content:center;">ð°</div>')
+      +(n.foto_url?'<img src="'+n.foto_url+'" style="width:60px;height:42px;object-fit:cover;border-radius:3px;flex-shrink:0;">':'<div style="width:60px;height:42px;background:var(--cream-dark);border-radius:3px;flex-shrink:0;display:flex;align-items:center;justify-content:center;">📰</div>')
       +'<div style="flex:1;min-width:0;"><div style="font-size:14px;font-weight:600;color:var(--green);">'+n.titulo+'</div>'
-      +'<div style="font-size:11px;color:var(--text-light);">'+n.fecha+' Â· '+n.categoria+'</div></div>'
-      +'<button class="tbl-btn tbl-del" onclick="deleteNovedad(\''+n.id+'\')">ð</button></div>';
+      +'<div style="font-size:11px;color:var(--text-light);">'+n.fecha+' · '+n.categoria+'</div></div>'
+      +'<button class="tbl-btn tbl-del" onclick="deleteNovedad(\''+n.id+'\')">🗑</button></div>';
   }).join('');
 }
 
 async function deleteNovedad(id) {
-  if(!confirm('Â¿Eliminar esta novedad?')) return;
+  if(!confirm('¿Eliminar esta novedad?')) return;
   try {
     await sbFetch('novedades?id=eq.'+id, {method:'DELETE'});
     await loadNovedades(); renderNvList(); showToast('Novedad eliminada');
-  } catch(e) { showToast('â Error: '+e.message); }
+  } catch(e) { showToast('✗ Error: '+e.message); }
 }
 
 
@@ -480,7 +480,7 @@ function openFotoModal(id) {
   if (!m) return;
   modalFotos = m.fotos || [];
   modalIdx = 0;
-  document.getElementById('modal-title').textContent = m.nombre + (m.marca ? ' Â· ' + m.marca : '') + (m.anio ? ' ' + m.anio : '');
+  document.getElementById('modal-title').textContent = m.nombre + (m.marca ? ' · ' + m.marca : '') + (m.anio ? ' ' + m.anio : '');
   document.getElementById('foto-modal').style.display = 'flex';
   document.body.style.overflow = 'hidden';
   renderModal();
@@ -529,7 +529,7 @@ function handleEqFile(files) {
 
 async function savePersona() {
   var nombre = document.getElementById('eq-nombre').value.trim();
-  if (!nombre) { showToast('â  IngresÃ¡ el nombre'); return; }
+  if (!nombre) { showToast('⚠ Ingresá el nombre'); return; }
 
   var btn = document.querySelector('#tab-equipo .admin-submit');
   btn.textContent = 'Guardando...'; btn.disabled = true;
@@ -550,7 +550,7 @@ async function savePersona() {
       } else {
         var errBody = await res.text();
         console.error('Error subiendo foto equipo:', res.status, errBody);
-        showToast('Error al subir la foto (' + res.status + '). RevisÃ¡ la consola para mÃ¡s detalles.');
+        showToast('Error al subir la foto (' + res.status + '). Revisá la consola para más detalles.');
         btn.textContent = 'Guardar'; btn.disabled = false;
         return;
       }
@@ -578,13 +578,13 @@ async function savePersona() {
       await sbFetch('equipo_personas', { method: 'POST', body: JSON.stringify(data) });
     }
 
-    showToast('â Persona guardada');
+    showToast('✓ Persona guardada');
     clearPersonaForm();
     await loadEquipoPersonas();
     renderEquipoListAdmin();
     renderEquipoPublico();
   } catch(e) {
-    showToast('â Error: ' + e.message);
+    showToast('✗ Error: ' + e.message);
   } finally {
     btn.textContent = 'Guardar'; btn.disabled = false;
   }
@@ -598,7 +598,7 @@ function clearPersonaForm() {
   document.getElementById('eq-preview').innerHTML = '';
   currentEqFoto = null;
   editingPersonaId = null;
-  document.getElementById('equipo-form-title').textContent = 'â Agregar persona';
+  document.getElementById('equipo-form-title').textContent = '➕ Agregar persona';
 }
 
 function renderEquipoListAdmin() {
@@ -614,19 +614,19 @@ function renderEquipoListAdmin() {
     html += '<div style="display:flex;align-items:center;gap:8px;padding:12px;background:var(--cream);border-radius:4px;border:1px solid var(--cream-dark);margin-bottom:8px;">';
     // Flechas orden
     html += '<div style="display:flex;flex-direction:column;gap:2px;">';
-    html += '<button onclick="moverPersona('+i+',-1)" '+(i===0?'disabled style="opacity:0.3;"':'')+' style="background:var(--green);color:#fff;border:none;border-radius:3px;width:24px;height:24px;cursor:pointer;font-size:14px;line-height:1;">â²</button>';
-    html += '<button onclick="moverPersona('+i+',1)" '+(i===equipoPersonas.length-1?'disabled style="opacity:0.3;"':'')+' style="background:var(--green);color:#fff;border:none;border-radius:3px;width:24px;height:24px;cursor:pointer;font-size:14px;line-height:1;">â¼</button>';
+    html += '<button onclick="moverPersona('+i+',-1)" '+(i===0?'disabled style="opacity:0.3;"':'')+' style="background:var(--green);color:#fff;border:none;border-radius:3px;width:24px;height:24px;cursor:pointer;font-size:14px;line-height:1;">▲</button>';
+    html += '<button onclick="moverPersona('+i+',1)" '+(i===equipoPersonas.length-1?'disabled style="opacity:0.3;"':'')+' style="background:var(--green);color:#fff;border:none;border-radius:3px;width:24px;height:24px;cursor:pointer;font-size:14px;line-height:1;">▼</button>';
     html += '</div>';
     // Foto
-    html += p.foto_url ? '<img src="'+p.foto_url+'" style="width:48px;height:48px;object-fit:cover;border-radius:50%;flex-shrink:0;">' : '<div style="width:48px;height:48px;background:var(--cream-dark);border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;">ð¤</div>';
+    html += p.foto_url ? '<img src="'+p.foto_url+'" style="width:48px;height:48px;object-fit:cover;border-radius:50%;flex-shrink:0;">' : '<div style="width:48px;height:48px;background:var(--cream-dark);border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;">👤</div>';
     // Info
     html += '<div style="flex:1;"><div style="font-size:14px;font-weight:700;color:var(--green);">'+p.nombre+'</div>';
     if (p.rol) html += '<div style="font-size:11px;color:var(--gold);">'+p.rol+'</div>';
     if (p.telefono) html += '<div style="font-size:12px;color:var(--text-mid);">'+p.telefono+'</div>';
     html += '</div>';
     // Botones
-    html += '<button class="tbl-btn tbl-edit" onclick="editPersonaByIdx('+i+')">â Editar</button>';
-    html += '<button class="tbl-btn tbl-del" onclick="deletePersonaByIdx('+i+')">ð</button>';
+    html += '<button class="tbl-btn tbl-edit" onclick="editPersonaByIdx('+i+')">✏ Editar</button>';
+    html += '<button class="tbl-btn tbl-del" onclick="deletePersonaByIdx('+i+')">🗑</button>';
     html += '</div>';
   }
   el.innerHTML = html;
@@ -648,9 +648,9 @@ async function moverPersona(idx, dir) {
     await loadEquipoPersonas();
     renderEquipoListAdmin();
     renderEquipoPublico();
-    showToast('â Orden actualizado');
+    showToast('✓ Orden actualizado');
   } catch(e) {
-    showToast('â Error: ' + e.message);
+    showToast('✗ Error: ' + e.message);
   }
 }
 
@@ -665,7 +665,7 @@ function editPersona(id) {
   document.getElementById('eq-rol').value = p.rol || '';
   document.getElementById('eq-tel').value = p.telefono || '';
   document.getElementById('eq-orden').value = p.orden || '';
-  document.getElementById('equipo-form-title').textContent = 'â Editando: ' + p.nombre;
+  document.getElementById('equipo-form-title').textContent = '✏ Editando: ' + p.nombre;
   if (p.foto_url) {
     document.getElementById('eq-preview').innerHTML = '<div class="photo-preview-item" style="width:80px;height:80px;border-radius:50%;overflow:hidden;"><img src="'+p.foto_url+'" style="width:100%;height:100%;object-fit:cover;"></div>';
   }
@@ -674,14 +674,14 @@ function editPersona(id) {
 }
 
 async function deletePersona(id) {
-  if (!confirm('Â¿Eliminar esta persona?')) return;
+  if (!confirm('¿Eliminar esta persona?')) return;
   try {
     await sbFetch('equipo_personas?id=eq.' + id, { method: 'DELETE' });
     await loadEquipoPersonas();
     renderEquipoListAdmin();
     renderEquipoPublico();
     showToast('Persona eliminada');
-  } catch(e) { showToast('â Error: ' + e.message); }
+  } catch(e) { showToast('✗ Error: ' + e.message); }
 }
 
 function renderEquipoPublico() {
@@ -693,11 +693,11 @@ function renderEquipoPublico() {
   }
   container.innerHTML = equipoPersonas.map(function(p) {
     return '<div class="team-card">'
-      + '<div class="team-photo">' + (p.foto_url ? '<img src="'+p.foto_url+'" alt="'+p.nombre+'">' : '<div class="team-photo-placeholder">ð¤</div>') + '</div>'
+      + '<div class="team-photo">' + (p.foto_url ? '<img src="'+p.foto_url+'" alt="'+p.nombre+'">' : '<div class="team-photo-placeholder">👤</div>') + '</div>'
       + '<div class="team-info">'
       + (p.rol ? '<div class="team-role">'+p.rol+'</div>' : '')
       + '<div class="team-name">'+p.nombre+'</div>'
-      + (p.telefono ? '<div class="team-phone">ð '+p.telefono+'</div>' : '')
+      + (p.telefono ? '<div class="team-phone">📞 '+p.telefono+'</div>' : '')
       + '</div></div>';
   }).join('');
 }
