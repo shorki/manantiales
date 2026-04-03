@@ -575,10 +575,10 @@ function renderModal() {
   var video = document.getElementById('modal-video');
   if (item.type === 'video') {
     img.style.display = 'none'; img.src = '';
-    video.src = item.url; video.style.display = '';
+    video.src = item.url; video.style.display = 'block';
   } else {
     video.style.display = 'none'; video.src = '';
-    img.src = item.url; img.style.display = '';
+    img.src = item.url; img.style.display = 'block';
   }
   counter.textContent = (modalIdx+1) + ' / ' + modalFotos.length;
   thumbs.innerHTML = modalFotos.map(function(it,i) {
