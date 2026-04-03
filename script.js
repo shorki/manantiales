@@ -49,17 +49,25 @@ async function normalizeImage(file) {
 }
 
 async function uploadFoto(file, equipoId) {
-  const safeExt = 'jpg';
-  const path = equipoId + '/' + Date.now() + '.' + safeExt;
-  const normalizedFile = await normalizeImage(file);
+  let fileToUpload, contentType, ext;
+  try {
+    fileToUpload = await normalizeImage(file);
+    contentType = 'image/jpeg';
+    ext = 'jpg';
+  } catch(e) {
+    fileToUpload = file;
+    contentType = file.type || 'image/jpeg';
+    ext = file.name.split('.').pop().toLowerCase() || 'jpg';
+  }
+  const path = equipoId + '/' + Date.now() + '.' + ext;
   const res = await fetch(SUPABASE_URL + '/storage/v1/object/fotos/' + path, {
     method: 'POST',
     headers: {
       'apikey': SUPABASE_KEY,
       'Authorization': 'Bearer ' + SUPABASE_KEY,
-      'Content-Type': 'image/jpeg'
+      'Content-Type': contentType
     },
-    body: normalizedFile
+    body: fileToUpload
   });
   if (!res.ok) throw new Error('Error subiendo foto');
   return SUPABASE_URL + '/storage/v1/object/public/fotos/' + path;
