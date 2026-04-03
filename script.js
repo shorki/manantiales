@@ -136,7 +136,10 @@ function showSection(name) {
     var navLinks = document.querySelectorAll('.nav-links a:not(.nav-btn-admin)');
     if (navLinks[map[name]] !== undefined) navLinks[map[name]].classList.add('active');
     window.scrollTo(0,0);
-    if (name === 'equipos') renderEquipos('Todos');
+    if (name === 'equipos') {
+      var list = document.getElementById('equipos-list');
+      if (!list || !list.querySelector('.machine-card')) renderEquipos('Todos');
+    }
     if (name === 'novedades') renderNovedades();
   } catch(e) { console.error('showSection error:', e); }
 }
