@@ -9,7 +9,7 @@ html{background:var(--green);}
   --white:#ffffff;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:'Barlow',sans-serif;background:#fff;color:var(--text-dark);overflow-x:hidden;overscroll-behavior-y:none;}
+body{font-family:'Barlow',sans-serif;background:#fff;color:var(--text-dark);overflow-x:hidden;overflow-y:scroll;overscroll-behavior-y:none;}
 
 /* NAV */
 nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(26,77,46,0.97);backdrop-filter:blur(8px);border-bottom:2px solid var(--gold);display:flex;align-items:center;padding:0 2rem;height:116px;}
