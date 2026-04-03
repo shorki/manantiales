@@ -1393,6 +1393,28 @@ function renderEquipoListAdmin() {
   el.innerHTML = html;
 }
 
+
+async function moverPersona(idx, dir) {
+  var newIdx = idx + dir;
+  if (newIdx < 0 || newIdx >= equipoPersonas.length) return;
+
+  // Swap orden values
+  var p1 = equipoPersonas[idx];
+  var p2 = equipoPersonas[newIdx];
+  var tempOrden = p1.orden;
+
+  try {
+    await sbFetch('equipo_personas?id=eq.' + p1.id, { method: 'PATCH', body: JSON.stringify({ orden: p2.orden }) });
+    await sbFetch('equipo_personas?id=eq.' + p2.id, { method: 'PATCH', body: JSON.stringify({ orden: tempOrden }) });
+    await loadEquipoPersonas();
+    renderEquipoListAdmin();
+    renderEquipoPublico();
+    showToast('✓ Orden actualizado');
+  } catch(e) {
+    showToast('✗ Error: ' + e.message);
+  }
+}
+
 function editPersonaByIdx(i) { editPersona(equipoPersonas[i].id); }
 function deletePersonaByIdx(i) { deletePersona(equipoPersonas[i].id); }
 
