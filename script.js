@@ -567,6 +567,8 @@ function renderModal() {
   var container = document.getElementById('modal-media-container');
   var counter = document.getElementById('modal-counter');
   var thumbs = document.getElementById('modal-thumbs');
+  var arrows = document.querySelectorAll('.modal-nav-btn');
+  arrows.forEach(function(a){ a.style.display = modalFotos.length > 1 ? '' : 'none'; });
   if (modalFotos.length === 0) { container.innerHTML=''; counter.textContent='Sin fotos'; thumbs.innerHTML=''; return; }
   var item = modalFotos[modalIdx];
   if (item.type === 'video') {
