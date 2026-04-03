@@ -19,17 +19,47 @@ async function sbFetch(path, options={}) {
   return text ? JSON.parse(text) : [];
 }
 
+async function normalizeImage(file) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    const blobUrl = URL.createObjectURL(file);
+    img.onload = function () {
+      const canvas = document.createElement('canvas');
+      canvas.width = img.naturalWidth;
+      canvas.height = img.naturalHeight;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0);
+      canvas.toBlob(function (blob) {
+        URL.revokeObjectURL(blobUrl);
+        if (!blob) { reject(new Error('No se pudo convertir la imagen')); return; }
+        const converted = new File(
+          [blob],
+          file.name.replace(/\.[^.]+$/, '') + '.jpg',
+          { type: 'image/jpeg' }
+        );
+        resolve(converted);
+      }, 'image/jpeg', 0.9);
+    };
+    img.onerror = function () {
+      URL.revokeObjectURL(blobUrl);
+      reject(new Error('Formato de imagen no compatible'));
+    };
+    img.src = blobUrl;
+  });
+}
+
 async function uploadFoto(file, equipoId) {
-  const ext = file.name.split('.').pop();
-  const path = equipoId + '/' + Date.now() + '.' + ext;
+  const safeExt = 'jpg';
+  const path = equipoId + '/' + Date.now() + '.' + safeExt;
+  const normalizedFile = await normalizeImage(file);
   const res = await fetch(SUPABASE_URL + '/storage/v1/object/fotos/' + path, {
     method: 'POST',
     headers: {
       'apikey': SUPABASE_KEY,
       'Authorization': 'Bearer ' + SUPABASE_KEY,
-      'Content-Type': file.type
+      'Content-Type': 'image/jpeg'
     },
-    body: file
+    body: normalizedFile
   });
   if (!res.ok) throw new Error('Error subiendo foto');
   return SUPABASE_URL + '/storage/v1/object/public/fotos/' + path;
@@ -232,13 +262,18 @@ function adminTab(tab, el) {
 }
 
 // ===== PHOTO UPLOAD (pending files) =====
-function handleFiles(files) {
-  Array.from(files).forEach(function(file) {
+async function handleFiles(files) {
+  const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
+  for (const file of Array.from(files)) {
+    if (!allowedTypes.includes(file.type)) {
+      showToast('⚠ Subí imágenes JPG, PNG o WebP. Ese archivo puede fallar en Chrome.');
+      continue;
+    }
     currentPhotos.push(file);
     var url = URL.createObjectURL(file);
     currentPhotoUrls.push({ url: url, existing: false });
-    renderPreviews();
-  });
+  }
+  renderPreviews();
 }
 function handleDrop(e) { e.preventDefault(); handleFiles(e.dataTransfer.files); }
 function renderPreviews() {
@@ -574,10 +609,19 @@ function renderModal() {
   container.innerHTML = '';
   var el = document.createElement(item.type === 'video' ? 'video' : 'img');
   el.style.cssText = 'width:auto;height:auto;max-width:94vw;max-height:68vh;object-fit:contain;border-radius:6px;display:block;';
-  if (item.type === 'video') { el.controls = true; }
-  else { el.alt = ''; }
+  if (item.type === 'video') {
+    el.controls = true;
+    el.src = item.url;
+  } else {
+    el.alt = '';
+    el.loading = 'eager';
+    el.decoding = 'async';
+    el.onerror = function() {
+      container.innerHTML = '<div style="color:#fff;text-align:center;padding:30px;">No se pudo cargar esta imagen</div>';
+    };
+    el.src = item.url;
+  }
   container.appendChild(el);
-  el.src = item.url;
   counter.textContent = (modalIdx+1) + ' / ' + modalFotos.length;
   thumbs.innerHTML = modalFotos.map(function(it,i) {
     var border = 'border:2px solid '+(i===modalIdx?'var(--gold)':'transparent');
