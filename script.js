@@ -279,7 +279,7 @@ function handleDrop(e) { e.preventDefault(); handleFiles(e.dataTransfer.files); 
 function renderPreviews() {
   document.getElementById('photo-previews').innerHTML = currentPhotoUrls.map(function(item, i) {
     var url = typeof item === 'string' ? item : item.url;
-    return '<div class="photo-preview-item"><img src="'+url+'"><button class="photo-preview-remove" onclick="removePhoto('+i+')">✕</button></div>';
+    return '<div class="photo-preview-item"><img src="'+url+'"><button class="photo-preview-remove" onclick="event.stopPropagation();removePhoto('+i+')">✕</button></div>';
   }).join('');
 }
 function removePhoto(i) {
@@ -314,7 +314,7 @@ function handleVideoDrop(e) { e.preventDefault(); handleVideoFiles(e.dataTransfe
 function renderVideoPreviews() {
   document.getElementById('video-previews').innerHTML = currentVideoUrls.map(function(item, i) {
     var url = typeof item === 'string' ? item : item.url;
-    return '<div class="photo-preview-item"><video src="'+url+'" style="width:100%;height:100%;object-fit:cover;"></video><button class="photo-preview-remove" onclick="removeVideo('+i+')">✕</button></div>';
+    return '<div class="photo-preview-item"><video src="'+url+'" style="width:100%;height:100%;object-fit:cover;"></video><button class="photo-preview-remove" onclick="event.stopPropagation();removeVideo('+i+')">✕</button></div>';
   }).join('');
 }
 function removeVideo(i) {
