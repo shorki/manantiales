@@ -254,6 +254,8 @@ function doLogin() {
 document.addEventListener('DOMContentLoaded', function() {
   var lp = document.getElementById('login-pass');
   if (lp) lp.addEventListener('keydown', function(e) { if(e.key==='Enter') doLogin(); });
+  loadMachines();
+  loadNovedades();
 });
 function closeAdminPanel() {
   document.getElementById('admin-panel').classList.remove('active');
