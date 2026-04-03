@@ -261,8 +261,24 @@ footer ul li a:hover{color:var(--gold-light);}
 @media(max-width:600px){
   .machines-grid,.equipos-list,.novedades-grid{grid-template-columns:1fr;}
   .cats-grid{grid-template-columns:repeat(2,1fr);}
-  .nav-links{display:none;}
   .footer-inner{grid-template-columns:1fr 1fr;}
+}
+
+/* ===== NAV MOBILE ===== */
+.nav-hamburger{display:none;}
+@media(max-width:768px){
+  nav{height:64px;padding:0 1rem;}
+  .nav-logo img{height:48px;}
+  .nav-tagline{margin-left:10px;padding-left:10px;}
+  .nav-tagline-top,.nav-tagline-bottom{display:none;}
+  .nav-flags{margin-top:0 !important;}
+  .nav-hamburger{display:flex;align-items:center;justify-content:center;margin-left:auto;background:none;border:none;color:#fff;font-size:26px;cursor:pointer;padding:8px;line-height:1;}
+  .nav-links{display:none;flex-direction:column;position:fixed;top:64px;left:0;right:0;background:rgba(26,77,46,0.98);z-index:999;padding:1rem 0;border-top:2px solid var(--gold);}
+  .nav-links.mobile-open{display:flex;}
+  .nav-links a{padding:14px 2rem;font-size:17px;border-bottom:1px solid rgba(255,255,255,0.08);}
+  .nav-links a:last-child{border-bottom:none;}
+  .hero-slider{height:calc(100vh - 64px);margin-top:64px;}
+  .page-header,.equipos-header,.qs-hero{margin-top:64px;}
 }
 
   /* ===== EQUIPO ===== */

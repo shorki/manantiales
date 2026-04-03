@@ -77,15 +77,22 @@ async function loadNovedades() {
 }
 
 // ===== NAVIGATION =====
+function toggleMobileMenu() {
+  var links = document.querySelector('.nav-links');
+  if (links) links.classList.toggle('mobile-open');
+}
+
 function showSection(name) {
   try {
+    var links = document.querySelector('.nav-links');
+    if (links) links.classList.remove('mobile-open');
     document.querySelectorAll('section').forEach(function(s) { s.classList.remove('active'); });
     var el = document.getElementById('sec-' + name);
     if (el) el.classList.add('active');
     document.querySelectorAll('.nav-links a:not(.nav-btn-admin)').forEach(function(a) { a.classList.remove('active'); });
     var map = {'inicio':0,'equipos':1,'quienes-somos':2,'novedades':3,'contacto':4};
-    var links = document.querySelectorAll('.nav-links a:not(.nav-btn-admin)');
-    if (links[map[name]] !== undefined) links[map[name]].classList.add('active');
+    var navLinks = document.querySelectorAll('.nav-links a:not(.nav-btn-admin)');
+    if (navLinks[map[name]] !== undefined) navLinks[map[name]].classList.add('active');
     window.scrollTo(0,0);
     if (name === 'equipos') renderEquipos('Todos');
     if (name === 'novedades') renderNovedades();
