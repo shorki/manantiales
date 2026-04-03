@@ -280,6 +280,9 @@ footer ul li a:hover{color:var(--gold-light);}
   .hero-slider{height:calc(100vh - 64px);margin-top:64px;}
   .page-header,.equipos-header,.qs-hero{margin-top:64px;}
   .rep-oficial-text{font-size:13px !important;letter-spacing:2px !important;white-space:normal !important;text-align:center;}
+  .rep-logos-row{flex-direction:column;gap:20px !important;}
+  .rep-separator{display:none;}
+  .rep-logo-img{height:80px !important;width:160px !important;}
 }
 
   /* ===== EQUIPO ===== */
