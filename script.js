@@ -275,18 +275,26 @@ function adminTab(tab, el) {
 // ===== PHOTO UPLOAD (pending files) =====
 async function handleFiles(files) {
   for (const file of Array.from(files)) {
-    if (!file.type.startsWith('image/')) {
+    if (!file.type.startsWith('image/') && !file.name.toLowerCase().match(/\.(heic|heif)$/)) {
       showToast('⚠ Solo se pueden subir imágenes.');
       continue;
     }
     var isHeic = file.type === 'image/heic' || file.type === 'image/heif'
       || file.name.toLowerCase().endsWith('.heic') || file.name.toLowerCase().endsWith('.heif');
+    var fileToAdd = file;
     if (isHeic) {
-      showToast('⚠ Formato HEIC no compatible. En el iPhone, compartí la foto eligiendo "Compatibilidad máxima" para que salga en JPG.');
-      continue;
+      showToast('⏳ Convirtiendo foto HEIC...');
+      try {
+        var converted = await heic2any({ blob: file, toType: 'image/jpeg', quality: 0.9 });
+        var blob = Array.isArray(converted) ? converted[0] : converted;
+        fileToAdd = new File([blob], file.name.replace(/\.[^.]+$/, '.jpg'), { type: 'image/jpeg' });
+      } catch(e) {
+        showToast('⚠ No se pudo convertir la foto. Intentá guardarla como JPG manualmente.');
+        continue;
+      }
     }
-    currentPhotos.push(file);
-    var url = URL.createObjectURL(file);
+    currentPhotos.push(fileToAdd);
+    var url = URL.createObjectURL(fileToAdd);
     currentPhotoUrls.push({ url: url, existing: false });
   }
   renderPreviews();
