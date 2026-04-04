@@ -629,6 +629,7 @@ function renderModal() {
     el.loading = 'eager';
     el.decoding = 'async';
     el.onerror = function() {
+      if (modalFotos.length > 1) { modalNav(1); return; }
       container.innerHTML = '<div style="color:#fff;text-align:center;padding:30px;">No se pudo cargar esta imagen</div>';
     };
     el.src = item.url;
