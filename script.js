@@ -55,9 +55,7 @@ async function uploadFoto(file, equipoId) {
     contentType = 'image/jpeg';
     ext = 'jpg';
   } catch(e) {
-    fileToUpload = file;
-    contentType = file.type || 'image/jpeg';
-    ext = file.name.split('.').pop().toLowerCase() || 'jpg';
+    throw new Error('No se pudo procesar la imagen. Convertila a JPG antes de subirla.');
   }
   const path = equipoId + '/' + Date.now() + '.' + ext;
   const res = await fetch(SUPABASE_URL + '/storage/v1/object/fotos/' + path, {
@@ -279,6 +277,12 @@ async function handleFiles(files) {
   for (const file of Array.from(files)) {
     if (!file.type.startsWith('image/')) {
       showToast('⚠ Solo se pueden subir imágenes.');
+      continue;
+    }
+    var isHeic = file.type === 'image/heic' || file.type === 'image/heif'
+      || file.name.toLowerCase().endsWith('.heic') || file.name.toLowerCase().endsWith('.heif');
+    if (isHeic) {
+      showToast('⚠ Formato HEIC no compatible. En el iPhone, compartí la foto eligiendo "Compatibilidad máxima" para que salga en JPG.');
       continue;
     }
     currentPhotos.push(file);
@@ -608,15 +612,32 @@ function openFotoModal(id) {
   document.getElementById('modal-title').textContent = m.nombre + (m.marca ? ' · ' + m.marca : '') + (m.anio ? ' ' + m.anio : '');
   document.getElementById('foto-modal').style.display = 'flex';
   document.body.style.overflow = 'hidden';
+  renderModalThumbs();
   renderModal();
+}
+function renderModalThumbs() {
+  var thumbs = document.getElementById('modal-thumbs');
+  thumbs.innerHTML = modalFotos.map(function(it,i) {
+    if (it.type === 'video') {
+      return '<div onclick="goModalFoto('+i+')" data-tidx="'+i+'" style="width:64px;height:48px;border-radius:4px;cursor:pointer;border:2px solid transparent;opacity:0.6;background:#111;display:flex;align-items:center;justify-content:center;font-size:22px;">▶</div>';
+    }
+    return '<img src="'+it.url+'" onclick="goModalFoto('+i+')" data-tidx="'+i+'" style="width:64px;height:48px;object-fit:cover;border-radius:4px;cursor:pointer;border:2px solid transparent;opacity:0.6;">';
+  }).join('');
+  updateThumbActive();
+}
+function updateThumbActive() {
+  document.getElementById('modal-thumbs').querySelectorAll('[data-tidx]').forEach(function(el) {
+    var active = parseInt(el.getAttribute('data-tidx')) === modalIdx;
+    el.style.border = '2px solid ' + (active ? 'var(--gold)' : 'transparent');
+    el.style.opacity = active ? '1' : '0.6';
+  });
 }
 function renderModal() {
   var container = document.getElementById('modal-media-container');
   var counter = document.getElementById('modal-counter');
-  var thumbs = document.getElementById('modal-thumbs');
   var arrows = document.querySelectorAll('.modal-nav-btn');
   arrows.forEach(function(a){ a.style.display = modalFotos.length > 1 ? '' : 'none'; });
-  if (modalFotos.length === 0) { container.innerHTML=''; counter.textContent='Sin fotos'; thumbs.innerHTML=''; return; }
+  if (modalFotos.length === 0) { container.innerHTML=''; counter.textContent='Sin fotos'; return; }
   var item = modalFotos[modalIdx];
   container.innerHTML = '';
   var el = document.createElement(item.type === 'video' ? 'video' : 'img');
@@ -627,23 +648,14 @@ function renderModal() {
   } else {
     el.alt = '';
     el.loading = 'eager';
-    el.decoding = 'async';
     el.onerror = function() {
-      if (modalFotos.length > 1) { modalNav(1); return; }
       container.innerHTML = '<div style="color:#fff;text-align:center;padding:30px;">No se pudo cargar esta imagen</div>';
     };
     el.src = item.url;
   }
   container.appendChild(el);
   counter.textContent = (modalIdx+1) + ' / ' + modalFotos.length;
-  thumbs.innerHTML = modalFotos.map(function(it,i) {
-    var border = 'border:2px solid '+(i===modalIdx?'var(--gold)':'transparent');
-    var opacity = 'opacity:'+(i===modalIdx?'1':'0.6');
-    if (it.type === 'video') {
-      return '<div onclick="goModalFoto('+i+')" style="width:64px;height:48px;border-radius:4px;cursor:pointer;'+border+';'+opacity+';background:#111;display:flex;align-items:center;justify-content:center;font-size:22px;">▶</div>';
-    }
-    return '<img src="'+it.url+'" onclick="goModalFoto('+i+')" style="width:64px;height:48px;object-fit:cover;border-radius:4px;cursor:pointer;'+border+';'+opacity+';">';
-  }).join('');
+  updateThumbActive();
 }
 function goModalFoto(i) { modalIdx=i; renderModal(); }
 function modalNav(dir) { modalIdx=(modalIdx+dir+modalFotos.length)%modalFotos.length; renderModal(); }
